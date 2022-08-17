@@ -22,4 +22,8 @@ export class ApiError extends Error {
     return new ApiError(406, message)
   }//incorrent values
 
+  static forRottenToken(message) {
+    return new ApiError(412, message)
+  }//rotten token
+
 }

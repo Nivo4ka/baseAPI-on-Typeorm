@@ -1,8 +1,10 @@
-import { Router } from "express";
+import express from "express";
 import authController from "./../controllers/auth/index";
-const router = new (Router as any)();
+import { validate } from "../middelwares/validate";
+import schemes from "./../yupSchemes/index";
+const router = express.Router();
 
-router.post("/registration", authController.registration);
-router.post("/login", authController.login);
+router.post("/registration", validate(schemes.regSchema), authController.registration);
+router.post("/login", validate(schemes.loginSchema), authController.login);
 
 export default router;
