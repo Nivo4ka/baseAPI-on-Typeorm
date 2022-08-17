@@ -13,8 +13,6 @@
       "typescript": "4.5.2"
    },
    "dependencies": {
-      "body-parser": "^1.19.1",
-      "crypto": "^1.0.1",
       "crypto-js": "^4.1.1",
       "dotenv": "^16.0.1",
       "express": "^4.18.1",
@@ -25,7 +23,6 @@
    },
    "scripts": {
       "start": "ts-node src/index.ts",
-      "serv": "npx nodemon src/index.ts",
-      "typeorm": "typeorm-ts-node-commonjs"
+      "serv": "npx nodemon src/index.ts"
    }
 }
