@@ -1,7 +1,7 @@
-import { registration } from "./singUp";
-import { login } from "./singIn";
+import singUp from './singUp';
+import singIn from './singIn';
 
 export default {
-  login,
-  registration
+  singIn,
+  singUp,
 };

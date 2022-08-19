@@ -1,9 +1,11 @@
-import { deleteUser } from "./delete";
-import { change } from "./change";
-import { read } from "./read";
+import deleteUser from './deleteUser';
+import patchUser from './patchUser';
+import getUser from './getUser';
+import getAllUsers from './getAllUsers';
 
 export default {
-  change,
+  patchUser,
   deleteUser,
-  read
+  getUser,
+  getAllUsers,
 };

@@ -1,24 +1,38 @@
-import { NextFunction, Request, Response } from "express";
-import CryptoJS from "crypto-js";
-import { generateJwt } from "./../../utils/tokenHalper"
-import { useAppDataSource } from "../../db/index";
-import { ApiError } from "../../error/apiError";
+import type { Handler } from 'express';
+import CryptoJS from 'crypto-js';
+import { StatusCodes } from 'http-status-codes';
+import { generateJwt } from '../../utils/tokenHalper';
+import db from '../../db';
+import ApiError from '../../error/ApiError';
+import config from '../../config';
 
 const comparePasswors = (possible: string, hashPassword: string) => {
-  const hash = CryptoJS.SHA256(possible).toString(CryptoJS.enc.Hex);
+  const hash = CryptoJS.SHA256(possible + config.password.solt).toString(CryptoJS.enc.Hex);
   return hash === hashPassword;
 };
 
-export const login = async (req: Request, res: Response, next: NextFunction) => {
-  const { email, password } = req.body;
-  const user = await useAppDataSource.findOneBy({ email });
-  if (!user) {
-    return next(ApiError.forNotFound("Пользователь не найден"));
+const singIn: Handler = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    let user = await db.user.findOne({
+      select: ['password'],
+      where: { email },
+    });
+    if (!user) {
+      return next(new ApiError({ statusCode: StatusCodes.NOT_FOUND, message: 'User not found', data: '' }));
+    }
+    const comparePassword = comparePasswors(password, user.password);
+    if (!comparePassword) {
+      return next(new ApiError({ statusCode: StatusCodes.NOT_ACCEPTABLE, message: 'Incorrent password', data: '' }));
+    }
+    user = await db.user.findOne({
+      where: { email },
+    });
+    const token = generateJwt(user.id);
+    return res.json({ token, user });
+  } catch (err) {
+    return next(err);
   }
-  let comparePassword = comparePasswors(password, user.password);
-  if (!comparePassword) {
-    return next(ApiError.forIncorrectValue("Указан неверный пароль"));
-  }
-  const token = generateJwt(user.id, user.email);
-  return res.json({ token });
-}
+};
+
+export default singIn;

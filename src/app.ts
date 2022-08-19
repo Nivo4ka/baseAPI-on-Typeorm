@@ -1,13 +1,14 @@
-import express from "express";
-import Router from "./routes/index"
-import { errorHandler } from "./middelwares/errorHandler"
+import express from 'express';
+import router from './routes';
+import errorHandler from './middelwares/errorHandler';
+import types from './types'; // eslint-disable-line @typescript-eslint/no-unused-vars
 
-export const app = express();
+const app = express();
+
 app.use(express.json());
 
-app.use("/api", Router);
+app.use('/api', router);
 
-// app.get('/', isAuth, controller)
-
-// err handler
 app.use(errorHandler);
+
+export default app;

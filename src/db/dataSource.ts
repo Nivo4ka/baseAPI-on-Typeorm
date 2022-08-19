@@ -1,19 +1,18 @@
 // import "reflect-metadata";
-import { DataSource } from "typeorm";
-import { User } from "./entities/User";
-import config from "../config";
+import { DataSource } from 'typeorm';
+import config from '../config';
 
-export const AppDataSource = new DataSource({
-  type: "postgres",
+const AppDataSource = new DataSource({
+  type: 'postgres',
   host: config.db.host,
   port: config.db.port,
   username: config.db.username,
   password: config.db.password,
-  database: config.db.nameDB,
+  database: config.db.dbName,
   synchronize: false,
   logging: false,
-  entities: [User],
-  migrations: [__dirname + './db/migrations/*{.ts,.js}'],
-  subscribers: [],
-  migrationsTransactionMode: 'each'
+  entities: [`${__dirname}/entities/*`],
+  migrations: [`${__dirname}/migrations/*`],
 });
+
+export default AppDataSource;

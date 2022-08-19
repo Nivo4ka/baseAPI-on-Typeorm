@@ -1,19 +1,35 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity({ name: 'users' })
-export class User {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+class User {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
   fullName: string;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    select: false,
+  })
   password: string;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    unique: true,
+  })
   email: string;
 
-  @Column({ type: "date" })
+  @Column({
+    type: 'date',
+    nullable: true,
+  })
   birthDay: Date;
 }
+
+export default User;

@@ -1,5 +1,19 @@
-import { Request, Response, NextFunction } from "express";
+import type { ErrorRequestHandler } from 'express';
+import {
+  StatusCodes,
+  getReasonPhrase,
+} from 'http-status-codes';
+import ApiError from '../error/ApiError';
 
-export const errorHandler = (err: { status: number; message: string }, req: Request, res: Response, next: NextFunction) => {
-  return res.status(err.status).json({ message: err.message })
-}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
+  if (err instanceof ApiError) {
+    return res.status(err.payload.statusCode).json(err.payload);
+  }
+
+  console.error(err);
+  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) });
+};
+
+export default errorHandler;

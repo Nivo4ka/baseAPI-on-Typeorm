@@ -1,26 +1,37 @@
-import { NextFunction, Request, Response } from "express";
-import CryptoJS from "crypto-js";
-import { User } from "../../db/entities/User";
-import { generateJwt } from "./../../utils/tokenHalper"
-import { useAppDataSource } from "../../db/index";
-import { ApiError } from "../../error/apiError";
+import type { Handler } from 'express';
+import CryptoJS from 'crypto-js';
+import { StatusCodes } from 'http-status-codes';
+import User from '../../db/entities/User';
+import { generateJwt } from '../../utils/tokenHalper';
+import db from '../../db';
+import ApiError from '../../error/ApiError';
+import config from '../../config';
 
-export const registration = async (req: Request, res: Response, next: NextFunction) => {
-  const { fullName, email, password, birthDay } = req.body;
-  const candidate = await useAppDataSource.findOneBy({
-    email,
-  });
-
-  if (candidate) {
-    return next(ApiError.forbidden("Пользователь c таким email уже существует"));
+const singUp: Handler = async (req, res, next) => {
+  try {
+    const { fullName, email, password, birthDay } = req.body;
+    const candidate = await db.user.findOneBy({
+      email,
+    });
+    if (candidate) {
+      return next(new ApiError({ statusCode: StatusCodes.CONFLICT, message: 'User with this email already exists', data: '' }));
+    }
+    const hashPassword = CryptoJS.SHA256(password + config.password.solt)
+      .toString(CryptoJS.enc.Hex);
+    let user = new User();
+    user.fullName = fullName;
+    user.password = hashPassword;
+    user.email = email;
+    user.birthDay = birthDay;
+    user = await db.user.save(user);
+    user = await db.user.findOne({
+      where: { email },
+    });
+    const token = generateJwt(user.id);
+    return res.json({ token, user });
+  } catch (err) {
+    return next(err);
   }
-  const hashPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
-  let user = new User();
-  user.fullName = fullName;
-  user.password = hashPassword;
-  user.email = email;
-  user.birthDay = birthDay;
-  user = await useAppDataSource.save(user);
-  const token = generateJwt(user.id, user.email);
-  return res.json({ token });
-}
+};
+
+export default singUp;

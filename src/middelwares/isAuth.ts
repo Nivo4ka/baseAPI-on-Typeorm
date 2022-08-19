@@ -1,21 +1,32 @@
-import { NextFunction, Request, Response } from "express";
-import { parseJwt } from "./../utils/tokenHalper";
-import { ApiError } from "../error/apiError";
+import type { Handler } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import { parseJwt } from '../utils/tokenHalper';
+import ApiError from '../error/ApiError';
+import db from '../db';
 
-
-export const isAuth = (req: Request, res: Response, next: NextFunction) => {
-  const { headers, body } = req;
+const isAuth: Handler = async (req, res, next) => {
+  const { headers } = req;
   try {
-    const token = headers.authorization.split(' ')[1];
-    if (token) {
-      const decoded = parseJwt(token);
-      body.userId = decoded.id;
-      body.userEmail = decoded.email
-      next();
-    } else {
-      return next(ApiError.forNotAuth("Пользователь не авторизирован"));
+    if (!headers.authorization) {
+      return next(new ApiError({ statusCode: StatusCodes.UNAUTHORIZED, message: 'User not authorized', data: '' }));
     }
+    const token = headers.authorization.split(' ')[1];
+    if (!token) {
+      return next(new ApiError({ statusCode: StatusCodes.UNAUTHORIZED, message: 'User not authorized', data: '' }));
+    }
+    const decoded = parseJwt(token);
+    const user = await db.user.findOne({ where: { id: +decoded.id } });
+    if (!user) {
+      return next(new ApiError({ statusCode: StatusCodes.NOT_FOUND, message: 'User not found', data: '' }));
+    }
+    req.user = user;
+    next();
   } catch (err) {
-    return next(ApiError.forRottenToken("Токен устарел"));
+    if (err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError') {
+      return next(new ApiError({ statusCode: StatusCodes.NOT_ACCEPTABLE, message: err.message }));
+    }
+    return next(err);
   }
-}
+};
+
+export default isAuth;
