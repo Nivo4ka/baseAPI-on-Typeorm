@@ -1,6 +1,6 @@
 import type { Handler } from 'express';
 import { StatusCodes } from 'http-status-codes';
-// import type schema from 'yup/lib/schema';
+import * as yup from 'yup';
 import type { ValidationSchemaType } from '../schemesValidate/typesSchemes';
 import ApiError from '../error/ApiError';
 
@@ -16,7 +16,12 @@ interface TemplateInt {
 const createValidationMiddleware = (schema: ValidationSchemaType): Handler => {
   const validate: Handler = async (req, res, next) => {
     try {
-      await schema.validate({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const tempSchema: any = {};
+      // eslint-disable-next-line no-return-assign
+      Object.entries(schema).forEach(([key, val]) => (tempSchema[key] = yup.object(val)));
+      const yupSchema = yup.object().shape(tempSchema).noUnknown(false);
+      await yupSchema.validate({
         body: req.body,
         query: req.query,
         params: req.params,

@@ -9,6 +9,7 @@ const singUpSchema: ValidationSchemaType = {
     password: yup.string().min(8).matches(/^[a-zA-Z0-9-_]{8,}$/).required(),
     birthDay: yup.date().required(),
   },
+
 };
 
 export default singUpSchema;
