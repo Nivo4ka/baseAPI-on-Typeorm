@@ -8,16 +8,16 @@ const isAuth: Handler = async (req, res, next) => {
   const { headers } = req;
   try {
     if (!headers.authorization) {
-      return next(new ApiError({ statusCode: StatusCodes.UNAUTHORIZED, message: 'User not authorized', data: '' }));
+      return next(new ApiError({ statusCode: StatusCodes.UNAUTHORIZED, message: 'User not authorized' }));
     }
     const token = headers.authorization.split(' ')[1];
     if (!token) {
-      return next(new ApiError({ statusCode: StatusCodes.UNAUTHORIZED, message: 'User not authorized', data: '' }));
+      return next(new ApiError({ statusCode: StatusCodes.UNAUTHORIZED, message: 'User not authorized' }));
     }
     const decoded = parseJwt(token);
     const user = await db.user.findOne({ where: { id: +decoded.id } });
     if (!user) {
-      return next(new ApiError({ statusCode: StatusCodes.NOT_FOUND, message: 'User not found', data: '' }));
+      return next(new ApiError({ statusCode: StatusCodes.NOT_FOUND, message: 'User not found' }));
     }
     req.user = user;
     next();

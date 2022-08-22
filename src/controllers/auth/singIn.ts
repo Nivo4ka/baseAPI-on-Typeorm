@@ -14,20 +14,18 @@ const comparePasswors = (possible: string, hashPassword: string) => {
 const singIn: Handler = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    let user = await db.user.findOne({
-      select: ['password'],
+    const user = await db.user.findOne({
+      select: ['id', 'fullName', 'email', 'birthDay', 'password'],
       where: { email },
     });
     if (!user) {
-      return next(new ApiError({ statusCode: StatusCodes.NOT_FOUND, message: 'User not found', data: '' }));
+      return next(new ApiError({ statusCode: StatusCodes.NOT_FOUND, message: 'User not found' }));
     }
     const comparePassword = comparePasswors(password, user.password);
     if (!comparePassword) {
-      return next(new ApiError({ statusCode: StatusCodes.NOT_ACCEPTABLE, message: 'Incorrent password', data: '' }));
+      return next(new ApiError({ statusCode: StatusCodes.NOT_ACCEPTABLE, message: 'Incorrent password' }));
     }
-    user = await db.user.findOne({
-      where: { email },
-    });
+    delete user.password;
     const token = generateJwt(user.id);
     return res.json({ token, user });
   } catch (err) {

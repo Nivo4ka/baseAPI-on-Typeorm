@@ -8,7 +8,7 @@ const patchUser: Handler = async (req, res, next) => {
     const { fullName, birthDay } = req.body;
     const { user } = req;
     if (!user) {
-      return next(new ApiError({ statusCode: StatusCodes.NOT_FOUND, message: 'User not found', data: '' }));
+      return next(new ApiError({ statusCode: StatusCodes.NOT_FOUND, message: 'User not found' }));
     }
     if (fullName) user.fullName = fullName;
 

@@ -14,7 +14,7 @@ const singUp: Handler = async (req, res, next) => {
       email,
     });
     if (candidate) {
-      return next(new ApiError({ statusCode: StatusCodes.CONFLICT, message: 'User with this email already exists', data: '' }));
+      return next(new ApiError({ statusCode: StatusCodes.CONFLICT, message: 'User with this email already exists' }));
     }
     const hashPassword = CryptoJS.SHA256(password + config.password.solt)
       .toString(CryptoJS.enc.Hex);
@@ -24,9 +24,7 @@ const singUp: Handler = async (req, res, next) => {
     user.email = email;
     user.birthDay = birthDay;
     user = await db.user.save(user);
-    user = await db.user.findOne({
-      where: { email },
-    });
+    delete user.password;
     const token = generateJwt(user.id);
     return res.json({ token, user });
   } catch (err) {
