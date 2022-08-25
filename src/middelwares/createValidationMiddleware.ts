@@ -41,7 +41,6 @@ const createValidationMiddleware = (schema: ValidationSchemaType): Handler => {
           errorInfo.push(qwer);
         });
       }
-
       return next(
         new ApiError({
           statusCode: StatusCodes.NOT_ACCEPTABLE,

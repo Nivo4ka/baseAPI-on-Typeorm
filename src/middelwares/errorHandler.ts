@@ -10,9 +10,10 @@ const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
     return res.status(err.payload.statusCode).json(err.payload);
   }
 
-  console.error(err);
+  console.error('err');
   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-    message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) });
+    message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
+  });
 };
 
 export default errorHandler;
