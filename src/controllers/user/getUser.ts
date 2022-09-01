@@ -1,14 +1,9 @@
-import type { Handler } from 'express';
-import { StatusCodes } from 'http-status-codes';
-import ApiError from '../../error/ApiError';
+import type { GetUserHandlerType } from '../../handlerTypes';
 
-const getUser: Handler = async (req, res, next) => {
+const getUser: GetUserHandlerType = async (req, res, next) => {
   try {
     const { user } = req;
-    if (!user) {
-      return next(new ApiError({ statusCode: StatusCodes.NOT_FOUND, message: 'User not found' }));
-    }
-    return res.send({ user });
+    return res.json({ user });
   } catch (err) {
     return next(err);
   }

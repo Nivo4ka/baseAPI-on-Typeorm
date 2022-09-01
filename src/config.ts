@@ -19,11 +19,16 @@ const config = {
     port: +joinedEnv.DB_PORT,
   },
   token: {
-    secret: joinedEnv.SECRET_KEY,
-    expiration: joinedEnv.EXPIRATION,
+    secret: joinedEnv.TOKEN_SECRET_KEY,
+    expiration: joinedEnv.TOKEN_EXPIRATION,
   },
   password: {
-    solt: joinedEnv.SOLT,
+    solt: joinedEnv.PASSWORD_SOLT,
+  },
+  cors: {
+    origin: joinedEnv.CORS_ORIGIN,
+    credentials: !!joinedEnv.CORS_CREDENTIALS,
+    optionsSuccessStatus: +joinedEnv.CORS_OPTIONS_SUCCESS_STATUS,
   },
 };
 

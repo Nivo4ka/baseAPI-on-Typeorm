@@ -1,9 +1,9 @@
-import singUpSchema from './singUpSchema';
 import singInSchema from './singInSchema';
-import patchUserSchema from './patchUserSchema';
+import patchUserInfoSchema from './patchUserInfoSchema';
+import patchUserPasswordSchema from './patchUserPasswordSchema';
 
 export default {
-  singUpSchema,
   singInSchema,
-  patchUserSchema,
+  patchUserInfoSchema,
+  patchUserPasswordSchema,
 };

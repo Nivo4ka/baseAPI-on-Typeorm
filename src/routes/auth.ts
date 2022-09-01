@@ -5,7 +5,7 @@ import schemes from '../schemesValidate/index';
 
 const router = express.Router();
 
-router.post('/registration', createValidationMiddleware(schemes.singUpSchema), authController.singUp);
+router.post('/singup', createValidationMiddleware(schemes.singInSchema), authController.singUp);
 router.post('/login', createValidationMiddleware(schemes.singInSchema), authController.singIn);
 
 export default router;

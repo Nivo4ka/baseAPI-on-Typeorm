@@ -1,10 +1,12 @@
 import deleteUser from './deleteUser';
-import patchUser from './patchUser';
+import patchUserInfo from './patchUserInfo';
+import patchUserPassword from './patchUserPassword';
 import getUser from './getUser';
 import getAllUsers from './getAllUsers';
 
 export default {
-  patchUser,
+  patchUserInfo,
+  patchUserPassword,
   deleteUser,
   getUser,
   getAllUsers,

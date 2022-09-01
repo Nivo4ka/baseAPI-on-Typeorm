@@ -1,30 +1,29 @@
-import type { Handler } from 'express';
-import CryptoJS from 'crypto-js';
-import { StatusCodes } from 'http-status-codes';
 import { generateJwt } from '../../utils/tokenHalper';
 import db from '../../db';
-import ApiError from '../../error/ApiError';
-import config from '../../config';
+import { comparePasswords } from '../../utils/passwordHalper';
+import type { AuthHandlerType } from '../../handlerTypes';
+import { incorrentPasswordError, notFoundError } from '../../utils/errorHalper';
 
-const comparePasswors = (possible: string, hashPassword: string) => {
-  const hash = CryptoJS.SHA256(possible + config.password.solt).toString(CryptoJS.enc.Hex);
-  return hash === hashPassword;
-};
-
-const singIn: Handler = async (req, res, next) => {
+const singIn: AuthHandlerType = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await db.user.findOne({
-      select: ['id', 'fullName', 'email', 'birthDay', 'password'],
-      where: { email },
-    });
+    // eslint-disable-next-line no-console
+    console.log(req.body);
+    const user = await db.user
+      .createQueryBuilder('users')
+      .addSelect('users.password')
+      .where('email = :email', { email })
+      .getOne();
+
     if (!user) {
-      return next(new ApiError({ statusCode: StatusCodes.NOT_FOUND, message: 'User not found' }));
+      return next(notFoundError);
     }
-    const comparePassword = comparePasswors(password, user.password);
+
+    const comparePassword = comparePasswords(password, user.password);
     if (!comparePassword) {
-      return next(new ApiError({ statusCode: StatusCodes.NOT_ACCEPTABLE, message: 'Incorrent password' }));
+      return next(incorrentPasswordError);
     }
+
     delete user.password;
     const token = generateJwt(user.id);
     return res.json({ token, user });
