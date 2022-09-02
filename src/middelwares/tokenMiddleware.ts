@@ -1,7 +1,7 @@
 import type { Handler } from 'express';
-import { parseJwt } from '../utils/tokenHalper';
+import { parseJwt } from '../utils/tokenHelper';
 import db from '../db';
-import { authError, notFoundError, tokenExpiredError, tokenInvalidError } from '../utils/errorHalper';
+import { authError, notFoundError, tokenExpiredError, tokenInvalidError } from '../utils/errorHelper';
 
 const tokenMiddleware: Handler = async (req, res, next) => {
   const { headers } = req;

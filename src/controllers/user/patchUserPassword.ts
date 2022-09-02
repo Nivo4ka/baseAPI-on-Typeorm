@@ -1,7 +1,7 @@
 import db from '../../db';
 import type { PatchUserPasswordHandlerType } from '../../handlerTypes';
-import { incorrentPasswordError } from '../../utils/errorHalper';
-import { comparePasswords, createHashPassword } from '../../utils/passwordHalper';
+import { incorrentPasswordError } from '../../utils/errorHelper';
+import { comparePasswords, createHashPassword } from '../../utils/passwordHelper';
 
 const patchUserPassword: PatchUserPasswordHandlerType = async (req, res, next) => {
   try {

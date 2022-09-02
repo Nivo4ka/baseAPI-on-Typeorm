@@ -7,9 +7,13 @@ import types from './types'; // eslint-disable-line @typescript-eslint/no-unused
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
-app.use(cors(config.cors));
+app.use(express.urlencoded({ limit: '50mb' }));
+
+app.use(cors());
+
+app.use(express.static(`${__dirname}/source/images`));
 
 app.use('/api', router);
 

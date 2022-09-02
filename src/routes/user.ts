@@ -11,6 +11,7 @@ router.use(tokenMiddleware);
 router.get('/me', userController.getUser);
 router.get('/all', userController.getAllUsers);
 router.patch('/me', createValidationMiddleware(schemes.patchUserInfoSchema), userController.patchUserInfo);
+router.patch('/img', createValidationMiddleware(schemes.patchUserImgSchema), userController.patchUserImg);
 router.patch('/password', createValidationMiddleware(schemes.patchUserPasswordSchema), userController.patchUserPassword);
 router.delete('/me', userController.deleteUser);
 

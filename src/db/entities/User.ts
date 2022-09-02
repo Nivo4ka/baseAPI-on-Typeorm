@@ -26,10 +26,10 @@ class User {
   email: string;
 
   @Column({
-    type: 'date',
+    type: 'varchar',
     nullable: true,
   })
-  birthDay: Date;
+  avatar: string;
 }
 
 export default User;

@@ -1,14 +1,12 @@
-import { generateJwt } from '../../utils/tokenHalper';
+import { generateJwt } from '../../utils/tokenHelper';
 import db from '../../db';
-import { comparePasswords } from '../../utils/passwordHalper';
+import { comparePasswords } from '../../utils/passwordHelper';
 import type { AuthHandlerType } from '../../handlerTypes';
-import { incorrentPasswordError, notFoundError } from '../../utils/errorHalper';
+import { incorrentPasswordError, notFoundError } from '../../utils/errorHelper';
 
 const singIn: AuthHandlerType = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    // eslint-disable-next-line no-console
-    console.log(req.body);
     const user = await db.user
       .createQueryBuilder('users')
       .addSelect('users.password')

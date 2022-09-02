@@ -26,6 +26,10 @@ export type PatchUserInfoBodyType = {
   email: string;
 };
 
+export type PatchUserImgBodyType = {
+  file: string;
+};
+
 export type PatchUserPasswordBodyType = {
   password: string;
   newPassword: string;
@@ -40,6 +44,9 @@ export type AuthHandlerType =
 
 export type PatchUserInfoHandlerType =
   RequestHandler<ParamsType, ResponseType, PatchUserInfoBodyType, QueryType>;
+
+export type PatchUserImgHandlerType =
+  RequestHandler<ParamsType, ResponseType, PatchUserImgBodyType, QueryType>;
 
 export type PatchUserPasswordHandlerType =
   RequestHandler<ParamsType, ResponseType, PatchUserPasswordBodyType, QueryType>;

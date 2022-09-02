@@ -1,7 +1,7 @@
 import type { Handler } from 'express';
 import * as yup from 'yup';
 import type { ValidationSchemaType, SchemaFiledType } from '../schemesValidate/typesSchemes';
-import { validationError } from '../utils/errorHalper';
+import { validationError } from '../utils/errorHelper';
 
 export interface ITemplateInt {
   path: string;

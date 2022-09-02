@@ -1,9 +1,9 @@
 import User from '../../db/entities/User';
-import { generateJwt } from '../../utils/tokenHalper';
+import { generateJwt } from '../../utils/tokenHelper';
 import db from '../../db';
-import { createHashPassword } from '../../utils/passwordHalper';
+import { createHashPassword } from '../../utils/passwordHelper';
 import type { AuthHandlerType } from '../../handlerTypes';
-import { existingUserError } from '../../utils/errorHalper';
+import { existingUserError } from '../../utils/errorHelper';
 
 const singUp: AuthHandlerType = async (req, res, next) => {
   try {
