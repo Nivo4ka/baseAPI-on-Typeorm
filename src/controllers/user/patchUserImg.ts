@@ -1,6 +1,5 @@
 import path from 'path';
 import fs from 'fs';
-import config from '../../config';
 import db from '../../db';
 import type { PatchUserImgHandlerType } from '../../handlerTypes';
 
@@ -12,16 +11,14 @@ const patchUserImg: PatchUserImgHandlerType = async (req, res, next) => {
     const fileData = file.split('base64,')[1];
     const fileType = file.split(';')[0].split('/')[1];
 
-    let fileName = `${Date.now()}.${fileType}`;
+    const fileName = `${user.email.split('@')[0]}-${Date.now()}.${fileType}`;
 
-    fs.writeFile(
+    await fs.promises.writeFile(
       `${path.resolve(__dirname, '../../source/images/', fileName)}`,
       fileData,
       { encoding: 'base64' },
-      (err) => { },
     );
 
-    fileName = `http://localhost:${config.port}/${fileName}`;
     user.avatar = fileName;
 
     await db.user.save(user);

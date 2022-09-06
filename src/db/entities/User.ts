@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, AfterUpdate, AfterLoad } from 'typeorm';
+import { convertToFinalUrl } from '../../utils/urlHelper';
 
 @Entity({ name: 'users' })
 class User {
@@ -30,6 +31,12 @@ class User {
     nullable: true,
   })
   avatar: string;
+
+  @AfterLoad()
+  @AfterUpdate()
+  public getAvatar() {
+    this.avatar = convertToFinalUrl(this.avatar);
+  }
 }
 
 export default User;
