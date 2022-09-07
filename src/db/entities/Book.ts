@@ -1,41 +1,45 @@
 import { Entity, PrimaryGeneratedColumn, Column, AfterUpdate, AfterLoad } from 'typeorm';
 import { convertToFinalUrl } from '../../utils/urlHelper';
 
-@Entity({ name: 'users' })
+@Entity({ name: 'books' })
 class User {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({
     type: 'varchar',
-    nullable: true,
+    nullable: false,
   })
-  fullName: string;
+  title: string;
 
   @Column({
     type: 'varchar',
     nullable: false,
-    select: false,
   })
-  password: string;
-
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    unique: true,
-  })
-  email: string;
+  autor: string;
 
   @Column({
     type: 'varchar',
     nullable: true,
   })
-  avatar: string;
+  description: string;
+
+  @Column({
+    type: 'float',
+    nullable: false,
+  })
+  price: number;
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  cover: string;
 
   @AfterLoad()
   @AfterUpdate()
-  public getAvatar() {
-    this.avatar = convertToFinalUrl(this.avatar, 'users');
+  public getCover() {
+    this.cover = convertToFinalUrl(this.cover, 'books');
   }
 }
 

@@ -11,7 +11,8 @@ app.use(express.json({ limit: '50mb' }));
 
 app.use(cors(config.cors));
 
-app.use('/static', express.static(`${__dirname}/source/images`));
+app.use('/static/users', express.static(`${__dirname}/source/images/users`));
+app.use('/static/books', express.static(`${__dirname}/source/images/books`));
 
 app.use('/api', router);
 
