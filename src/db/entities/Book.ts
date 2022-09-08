@@ -20,6 +20,12 @@ class User {
 
   @Column({
     type: 'varchar',
+    nullable: false,
+  })
+  genre: string;
+
+  @Column({
+    type: 'varchar',
     nullable: true,
   })
   description: string;
@@ -37,7 +43,6 @@ class User {
   cover: string;
 
   @AfterLoad()
-  @AfterUpdate()
   public getCover() {
     this.cover = convertToFinalUrl(this.cover, 'books');
   }

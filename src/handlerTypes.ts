@@ -1,7 +1,12 @@
 import type { RequestHandler } from 'express';
 import type User from './db/entities/User';
+import type Book from './db/entities/Book';
 
 export type ParamsType = Record<string, never>;
+
+export type BookParamsType = {
+  bookId: string;
+};
 
 export type ResponseType = {
   user: User;
@@ -14,6 +19,24 @@ export type GetAllUsersResponseType = {
 
 export type DeleteUserResponseType = {
   message: string;
+};
+
+export type AllBooksResponseType = {
+  books: Book[];
+  count?: number;
+};
+
+export type BookResponseType = {
+  book: Book;
+};
+
+export type AddBookBodyType = {
+  title: string;
+  autor: string;
+  price: number;
+  genre: string;
+  description?: string;
+  cover?: string;
 };
 
 export type AuthBodyType = {
@@ -37,6 +60,15 @@ export type PatchUserPasswordBodyType = {
 
 export type BodyType = Record<string, never>;
 
+export type GetAllBooksQueryType = {
+  page?: string;
+  pageSize?: string;
+  sortBy?: string;
+  direction?: 'asc' | 'desc';
+  search?: string;
+  genres?: string;
+};
+
 export type QueryType = Record<string, never>;
 
 export type AuthHandlerType =
@@ -59,3 +91,12 @@ export type GetUserHandlerType =
 
 export type GetAllUsersHandlerType =
   RequestHandler<ParamsType, GetAllUsersResponseType, BodyType, QueryType>;
+
+export type AddBookHandlerType =
+  RequestHandler<ParamsType, BookResponseType, AddBookBodyType, QueryType>;
+
+export type GetAllBooksHandlerType =
+  RequestHandler<ParamsType, AllBooksResponseType, BodyType, GetAllBooksQueryType>;
+
+export type GetBookByIdHandlerType =
+  RequestHandler<BookParamsType, BookResponseType, BodyType, QueryType>;

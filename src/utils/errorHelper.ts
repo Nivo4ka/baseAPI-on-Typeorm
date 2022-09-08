@@ -6,6 +6,8 @@ export const authError = new ApiError({ statusCode: StatusCodes.UNAUTHORIZED, me
 
 export const notFoundError = new ApiError({ statusCode: StatusCodes.NOT_FOUND, message: 'User not found' });
 
+export const notFoundBookError = new ApiError({ statusCode: StatusCodes.NOT_FOUND, message: 'Book not found' });
+
 export const tokenExpiredError = new ApiError({ statusCode: StatusCodes.NOT_ACCEPTABLE, message: 'token expired' });
 
 export const tokenInvalidError = new ApiError({ statusCode: StatusCodes.NOT_ACCEPTABLE, message: 'invalid token' });

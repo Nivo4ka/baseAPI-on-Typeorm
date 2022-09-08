@@ -14,7 +14,7 @@ const patchUserImg: PatchUserImgHandlerType = async (req, res, next) => {
     const fileName = `${user.email.split('@')[0]}-${Date.now()}.${fileType}`;
 
     await fs.promises.writeFile(
-      `${path.resolve(__dirname, '../../source/images/', fileName)}`,
+      `${path.resolve(__dirname, '../../source/images/users', fileName)}`,
       fileData,
       { encoding: 'base64' },
     );
