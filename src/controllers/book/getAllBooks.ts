@@ -8,7 +8,7 @@ const getAllBooks: GetAllBooksHandlerType = async (req, res, next) => {
     let { search } = req.query;
     search = search || '';
     const currentPage = +page || 1;
-    const currentPageSize = +pageSize || 2;
+    const currentPageSize = +pageSize || 12;
     let currentGenges = [];
     const qwe = await db.genre.find();
     if (genres) {
