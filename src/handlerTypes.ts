@@ -63,10 +63,12 @@ export type BodyType = Record<string, never>;
 export type GetAllBooksQueryType = {
   page?: string;
   pageSize?: string;
-  sortBy?: string;
-  direction?: 'asc' | 'desc';
+  sortBy: string;
+  direction: 'asc' | 'desc';
   search?: string;
   genres?: string;
+  minPrice: string;
+  maxPrice: string;
 };
 
 export type QueryType = Record<string, never>;

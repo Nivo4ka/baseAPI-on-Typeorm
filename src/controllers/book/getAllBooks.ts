@@ -1,10 +1,10 @@
-import { ILike, In } from 'typeorm';
+import { Between, ILike, In } from 'typeorm';
 import db from '../../db';
 import type { GetAllBooksHandlerType } from '../../handlerTypes';
 
 const getAllBooks: GetAllBooksHandlerType = async (req, res, next) => {
   try {
-    const { page, pageSize, sortBy, direction, genres } = req.query;
+    const { page, pageSize, sortBy, direction, genres, minPrice, maxPrice } = req.query;
     let { search } = req.query;
     search = search || '';
     const currentPage = +page || 1;
@@ -22,10 +22,12 @@ const getAllBooks: GetAllBooksHandlerType = async (req, res, next) => {
         {
           title: ILike(`%${search}%`),
           genre: In(currentGenges),
+          price: Between(+minPrice, +maxPrice),
         },
         {
           autor: ILike(`%${search}%`),
           genre: In(currentGenges),
+          price: Between(+minPrice, +maxPrice),
         },
       ],
       order: {
@@ -34,7 +36,6 @@ const getAllBooks: GetAllBooksHandlerType = async (req, res, next) => {
       skip: ((currentPage - 1) * currentPageSize),
       take: currentPageSize,
     });
-    // db.book.filterBooks(+page, +pageSize, sortBy, direction, genres, search);
     return res.json({ books: books[0], count: books[1] });
   } catch (err) {
     return next(err);

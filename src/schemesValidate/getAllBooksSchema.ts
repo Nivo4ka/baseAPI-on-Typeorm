@@ -11,6 +11,8 @@ const getAllBooksSchema: ValidationSchemaType = {
     direction: yup.string().matches(/(asc|desc)/).required(),
     search: yup.string(),
     genres: yup.string(),
+    minPrice: yup.string().required(),
+    maxPrice: yup.string().required(),
   },
   params: {
   },
