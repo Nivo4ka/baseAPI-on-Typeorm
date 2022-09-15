@@ -6,7 +6,7 @@ const addBookSchema: ValidationSchemaType = {
     title: yup.string().required(),
     autor: yup.string().required(),
     price: yup.number().required(),
-    genre: yup.string().required(),
+    genre: yup.number().required(),
     description: yup.string(),
     cover: yup.string(),
   },

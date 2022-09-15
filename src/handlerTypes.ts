@@ -1,6 +1,7 @@
 import type { RequestHandler } from 'express';
 import type User from './db/entities/User';
 import type Book from './db/entities/Book';
+import type Genre from './db/entities/Genre';
 
 export type ParamsType = Record<string, never>;
 
@@ -26,6 +27,10 @@ export type AllBooksResponseType = {
   count?: number;
 };
 
+export type GenresResponseType = {
+  genres: Genre[];
+};
+
 export type BookResponseType = {
   book: Book;
 };
@@ -34,7 +39,7 @@ export type AddBookBodyType = {
   title: string;
   autor: string;
   price: number;
-  genre: string;
+  genre: number;
   description?: string;
   cover?: string;
 };
@@ -102,3 +107,6 @@ export type GetAllBooksHandlerType =
 
 export type GetBookByIdHandlerType =
   RequestHandler<BookParamsType, BookResponseType, BodyType, QueryType>;
+
+export type GetAllGenresHandlerType =
+  RequestHandler<ParamsType, GenresResponseType, BodyType, QueryType>;

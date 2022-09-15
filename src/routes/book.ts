@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.post('/add', tokenMiddleware, createValidationMiddleware(schemes.addBookSchema), bookController.addBook);
 router.get('/getAll', createValidationMiddleware(schemes.getAllBooksSchema), bookController.getAllBooks);
-router.post('/:bookId', tokenMiddleware, bookController.getBookById);
+router.get('/:bookId', bookController.getBookById);
 
 export default router;

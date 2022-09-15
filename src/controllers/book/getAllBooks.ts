@@ -12,21 +12,21 @@ const getAllBooks: GetAllBooksHandlerType = async (req, res, next) => {
     let currentGenges = [];
     const qwe = await db.genre.find();
     if (genres) {
-      currentGenges = genres.split(',');
+      currentGenges = genres.split(',').map((item) => +item);
     } else {
-      currentGenges = qwe.map((item) => item.name);
+      currentGenges = qwe.map((item) => item.id);
     }
 
     const books = await db.book.findAndCount({
       where: [
         {
           title: ILike(`%${search}%`),
-          genre: In(currentGenges),
+          genreId: In(currentGenges),
           price: Between(+minPrice, +maxPrice),
         },
         {
           autor: ILike(`%${search}%`),
-          genre: In(currentGenges),
+          genreId: In(currentGenges),
           price: Between(+minPrice, +maxPrice),
         },
       ],

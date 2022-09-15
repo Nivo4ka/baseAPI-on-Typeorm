@@ -11,7 +11,7 @@ const addBook: AddBookHandlerType = async (req, res, next) => {
     newBook.title = title;
     newBook.autor = autor;
     newBook.price = price;
-    newBook.genre = genre;
+    newBook.genreId = genre;
 
     if (req.body.cover) {
       const { cover } = req.body;

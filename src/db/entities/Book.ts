@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, AfterUpdate, AfterLoad } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, AfterLoad, ManyToOne, JoinColumn } from 'typeorm';
 import { convertToFinalUrl } from '../../utils/urlHelper';
+import Genre from './Genre';
 
 @Entity({ name: 'books' })
-class User {
+class Book {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,10 +20,10 @@ class User {
   autor: string;
 
   @Column({
-    type: 'varchar',
+    type: 'integer',
     nullable: false,
   })
-  genre: string;
+  genreId: number;
 
   @Column({
     type: 'varchar',
@@ -42,10 +43,14 @@ class User {
   })
   cover: string;
 
+  @ManyToOne(() => Genre, { nullable: false })
+  @JoinColumn({ name: 'genreId', referencedColumnName: 'id' })
+  genre: Genre;
+
   @AfterLoad()
   public getCover() {
     this.cover = convertToFinalUrl(this.cover, 'books');
   }
 }
 
-export default User;
+export default Book;
