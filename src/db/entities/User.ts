@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, AfterUpdate, AfterLoad } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, AfterUpdate, AfterLoad, OneToMany, JoinTable } from 'typeorm';
 import { convertToFinalUrl } from '../../utils/urlHelper';
+import Cart from './Cart';
+import Favorite from './Favorite';
 
 @Entity({ name: 'users' })
 class User {
@@ -31,6 +33,13 @@ class User {
     nullable: true,
   })
   avatar: string;
+
+  @OneToMany(() => Favorite, (favorite) => favorite.user, { cascade: true })
+  @JoinTable()
+  favorites: Favorite[];
+
+  @OneToMany(() => Cart, (cart) => cart.user, { cascade: true })
+  cart: Cart[];
 
   @AfterLoad()
   @AfterUpdate()

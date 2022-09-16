@@ -7,12 +7,12 @@ const getAllBooksSchema: ValidationSchemaType = {
   query: {
     page: yup.string(),
     pageSize: yup.string(),
-    sortBy: yup.string().required(),
-    direction: yup.string().matches(/(asc|desc)/).required(),
+    sortBy: yup.string().oneOf(['price', 'title', 'autor', 'ratings']),
+    direction: yup.string().oneOf(['ASC', 'DESC']),
     search: yup.string(),
     genres: yup.string(),
-    minPrice: yup.string().required(),
-    maxPrice: yup.string().required(),
+    minPrice: yup.string(),
+    maxPrice: yup.string(),
   },
   params: {
   },

@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, AfterLoad, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, AfterLoad, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { convertToFinalUrl } from '../../utils/urlHelper';
 import Genre from './Genre';
+import Rating from './Rating';
 
 @Entity({ name: 'books' })
 class Book {
@@ -43,9 +44,12 @@ class Book {
   })
   cover: string;
 
-  @ManyToOne(() => Genre, { nullable: false })
+  @ManyToOne(() => Genre, (genre) => genre.id, { nullable: false })
   @JoinColumn({ name: 'genreId', referencedColumnName: 'id' })
   genre: Genre;
+
+  @OneToMany(() => Rating, (rating) => rating.book, { cascade: true })
+  ratings: Rating[];
 
   @AfterLoad()
   public getCover() {

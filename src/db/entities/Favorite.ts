@@ -2,8 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 't
 import Book from './Book';
 import User from './User';
 
-@Entity({ name: 'rating' })
-class Rating {
+@Entity({ name: 'favorite' })
+class Favorite {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,12 +19,6 @@ class Rating {
   })
   userId: number;
 
-  @Column({
-    type: 'integer',
-    nullable: false,
-  })
-  grade: number;
-
   @ManyToOne(() => Book, { nullable: false })
   @JoinColumn({ name: 'bookId', referencedColumnName: 'id' })
   book: Book;
@@ -34,4 +28,4 @@ class Rating {
   user: User;
 }
 
-export default Rating;
+export default Favorite;

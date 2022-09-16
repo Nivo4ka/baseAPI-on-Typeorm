@@ -16,6 +16,10 @@ export const incorrentPasswordError = new ApiError({ statusCode: StatusCodes.NOT
 
 export const existingUserError = new ApiError({ statusCode: StatusCodes.CONFLICT, message: 'User with this email already exists' });
 
+export const existingError = new ApiError({ statusCode: StatusCodes.CONFLICT, message: 'User already exists' });
+
+export const existingBookError = new ApiError({ statusCode: StatusCodes.CONFLICT, message: 'Book already exists' });
+
 export const validationError = (name:string, errorInfo: ITemplateInt[]) => {
   return new ApiError({
     statusCode: StatusCodes.NOT_ACCEPTABLE,

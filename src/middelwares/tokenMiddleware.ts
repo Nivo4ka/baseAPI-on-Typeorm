@@ -14,7 +14,10 @@ const tokenMiddleware: Handler = async (req, res, next) => {
       return next(authError);
     }
     const decoded = parseJwt(token);
-    const user = await db.user.findOne({ where: { id: +decoded.id } });
+    const user = await db.user.findOne({
+      relations: { favorites: true, cart: true },
+      where: { id: +decoded.id },
+    });
     if (!user) {
       return next(notFoundError);
     }

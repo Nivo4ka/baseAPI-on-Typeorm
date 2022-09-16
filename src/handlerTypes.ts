@@ -2,6 +2,8 @@ import type { RequestHandler } from 'express';
 import type User from './db/entities/User';
 import type Book from './db/entities/Book';
 import type Genre from './db/entities/Genre';
+import type Favorite from './db/entities/Favorite';
+import type Rating from './db/entities/Rating';
 
 export type ParamsType = Record<string, never>;
 
@@ -35,6 +37,14 @@ export type BookResponseType = {
   book: Book;
 };
 
+export type FavoriteResponseType = {
+  favorites: Favorite[];
+};
+
+export type RatingResponseType = {
+  ratings: Rating[];
+};
+
 export type AddBookBodyType = {
   title: string;
   autor: string;
@@ -63,17 +73,21 @@ export type PatchUserPasswordBodyType = {
   newPassword: string;
 };
 
+export type AddRatingBodyType = {
+  grade: number;
+};
+
 export type BodyType = Record<string, never>;
 
 export type GetAllBooksQueryType = {
   page?: string;
   pageSize?: string;
-  sortBy: string;
-  direction: 'asc' | 'desc';
+  sortBy?: string;
+  direction?: 'ASC' | 'DESC';
   search?: string;
   genres?: string;
-  minPrice: string;
-  maxPrice: string;
+  minPrice?: string;
+  maxPrice?: string;
 };
 
 export type QueryType = Record<string, never>;
@@ -110,3 +124,12 @@ export type GetBookByIdHandlerType =
 
 export type GetAllGenresHandlerType =
   RequestHandler<ParamsType, GenresResponseType, BodyType, QueryType>;
+
+export type AddToFavoriteHandlerType =
+  RequestHandler<BookParamsType, FavoriteResponseType, BodyType, QueryType>;
+
+export type AddRatingHandlerType =
+  RequestHandler<BookParamsType, RatingResponseType, AddRatingBodyType, QueryType>;
+
+export type DeleteRatingHandlerType =
+  RequestHandler<BookParamsType, RatingResponseType, BodyType, QueryType>;

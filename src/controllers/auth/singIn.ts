@@ -11,6 +11,8 @@ const singIn: AuthHandlerType = async (req, res, next) => {
       .createQueryBuilder('users')
       .addSelect('users.password')
       .where('email = :email', { email })
+      .leftJoinAndSelect('users.favorites', 'favorite')
+      .leftJoinAndSelect('users.cart', 'cart')
       .getOne();
 
     if (!user) {
@@ -24,6 +26,7 @@ const singIn: AuthHandlerType = async (req, res, next) => {
 
     delete user.password;
     const token = generateJwt(user.id);
+    // console.log(user.favorites);
     return res.json({ token, user });
   } catch (err) {
     return next(err);
