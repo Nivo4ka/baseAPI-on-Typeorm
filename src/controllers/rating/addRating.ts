@@ -1,7 +1,7 @@
 import db from '../../db';
 import Rating from '../../db/entities/Rating';
 import type { AddRatingHandlerType } from '../../handlerTypes';
-import { existingError, notFoundBookError } from '../../utils/errorHelper';
+import { notFoundBookError } from '../../utils/errorHelper';
 
 const addRating: AddRatingHandlerType = async (req, res, next) => {
   try {
@@ -9,22 +9,38 @@ const addRating: AddRatingHandlerType = async (req, res, next) => {
     const { bookId } = req.params;
     const { grade } = req.body;
 
-    const book = await db.book.createQueryBuilder('books').where('books.id = :bookId', { bookId }).getOne();
+    const book = await db.book.findOne({
+      where: {
+        id: +bookId,
+      },
+    });
     if (!book) {
       return next(notFoundBookError);
     }
-
-    const isRating = book.ratings.find((item) => item.userId === user.id);
-    if (isRating) {
-      return next(existingError);
+    const rating = await db.rating.findOne({
+      where: {
+        bookId: book.id,
+        userId: user.id,
+      },
+    });
+    if (rating) {
+      rating.grade = grade;
+      await db.rating.save(rating);
+    } else {
+      const rating = new Rating();
+      rating.book = book;
+      rating.user = user;
+      rating.grade = grade;
+      await db.rating.save(rating);
     }
-
-    const rating = new Rating();
-    rating.book = book;
-    rating.user = user;
-    rating.grade = grade;
-    await db.rating.save(rating);
-    const ratings = await db.rating.find({ where: { bookId: book.id } });
+    const reWriteRating = await db.rating.find({
+      where: {
+        bookId: book.id,
+      },
+    });
+    book.rating = reWriteRating.reduce((acc, item) => acc + item.grade, 0) / reWriteRating.length;
+    db.book.save(book);
+    const ratings = await db.rating.find({ where: { userId: user.id } });
     return res.send({ ratings });
   } catch (err) {
     return next(err);

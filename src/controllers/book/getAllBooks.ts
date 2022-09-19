@@ -11,7 +11,7 @@ const getAllBooks: GetAllBooksHandlerType = async (req, res, next) => {
       currentGenges = genres.split(',').map((item) => +item);
     }
 
-    const query = db.book.createQueryBuilder('books').leftJoinAndSelect('books.ratings', 'rating');
+    const query = db.book.createQueryBuilder('books');
 
     if (req.query.search) {
       const search = `%${req.query.search}%`;
@@ -34,7 +34,6 @@ const getAllBooks: GetAllBooksHandlerType = async (req, res, next) => {
       .skip((currentPage - 1) * currentPageSize)
       .take(currentPageSize)
       .getManyAndCount();
-
     return res.json({ books: books[0], count: books[1] });
   } catch (err) {
     return next(err);

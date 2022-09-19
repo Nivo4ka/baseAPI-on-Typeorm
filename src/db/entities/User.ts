@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, AfterUpdate, AfterLoad, OneToMa
 import { convertToFinalUrl } from '../../utils/urlHelper';
 import Cart from './Cart';
 import Favorite from './Favorite';
+import Rating from './Rating';
 
 @Entity({ name: 'users' })
 class User {
@@ -40,6 +41,9 @@ class User {
 
   @OneToMany(() => Cart, (cart) => cart.user, { cascade: true })
   cart: Cart[];
+
+  @OneToMany(() => Rating, (rating) => rating.user, { cascade: true })
+  ratings: Rating[];
 
   @AfterLoad()
   @AfterUpdate()

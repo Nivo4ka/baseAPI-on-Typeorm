@@ -13,6 +13,7 @@ const singIn: AuthHandlerType = async (req, res, next) => {
       .where('email = :email', { email })
       .leftJoinAndSelect('users.favorites', 'favorite')
       .leftJoinAndSelect('users.cart', 'cart')
+      .leftJoinAndSelect('users.ratings', 'rating')
       .getOne();
 
     if (!user) {

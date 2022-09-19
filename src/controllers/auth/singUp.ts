@@ -19,8 +19,10 @@ const singUp: AuthHandlerType = async (req, res, next) => {
     user.password = hashPassword;
     user.email = email;
     user = await db.user.save(user);
-    delete user.password;
-
+    user = await db.user.findOne({
+      relations: { favorites: true, cart: true, ratings: true },
+      where: { id: user.id },
+    });
     const token = generateJwt(user.id);
     return res.json({ token, user });
   } catch (err) {
