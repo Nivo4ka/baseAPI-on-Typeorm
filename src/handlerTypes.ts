@@ -29,6 +29,10 @@ export type AllBooksResponseType = {
   count?: number;
 };
 
+export type BooksResponseType = {
+  books: Book[];
+};
+
 export type GenresResponseType = {
   genres: Genre[];
 };
@@ -90,6 +94,10 @@ export type GetAllBooksQueryType = {
   maxPrice?: string;
 };
 
+export type GetBooksByArrayQueryType = {
+  bookIds: string;
+};
+
 export type QueryType = Record<string, never>;
 
 export type AuthHandlerType =
@@ -118,6 +126,9 @@ export type AddBookHandlerType =
 
 export type GetAllBooksHandlerType =
   RequestHandler<ParamsType, AllBooksResponseType, BodyType, GetAllBooksQueryType>;
+
+export type GetBooksByArrayHandlerType =
+  RequestHandler<ParamsType, BooksResponseType, BodyType, GetBooksByArrayQueryType>;
 
 export type GetBookByIdHandlerType =
   RequestHandler<BookParamsType, BookResponseType, BodyType, QueryType>;
