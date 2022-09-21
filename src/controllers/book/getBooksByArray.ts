@@ -15,7 +15,6 @@ const getBooksByArray: GetBooksByArrayHandlerType = async (req, res, next) => {
         id: In(currentIds),
       },
     });
-
     return res.json({ books });
   } catch (err) {
     return next(err);

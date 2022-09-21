@@ -4,6 +4,7 @@ import type Book from './db/entities/Book';
 import type Genre from './db/entities/Genre';
 import type Favorite from './db/entities/Favorite';
 import type Rating from './db/entities/Rating';
+import type Cart from './db/entities/Cart';
 
 export type ParamsType = Record<string, never>;
 
@@ -45,6 +46,10 @@ export type FavoriteResponseType = {
   favorites: Favorite[];
 };
 
+export type CartResponseType = {
+  cart: Cart[];
+};
+
 export type RatingResponseType = {
   ratings: Rating[];
 };
@@ -79,6 +84,10 @@ export type PatchUserPasswordBodyType = {
 
 export type AddRatingBodyType = {
   grade: number;
+};
+
+export type ChangeCountCartBodyType = {
+  count: number;
 };
 
 export type BodyType = Record<string, never>;
@@ -144,3 +153,9 @@ export type AddRatingHandlerType =
 
 export type DeleteRatingHandlerType =
   RequestHandler<BookParamsType, RatingResponseType, BodyType, QueryType>;
+
+export type AddToCartHandlerType =
+  RequestHandler<BookParamsType, CartResponseType, BodyType, QueryType>;
+
+export type ChangeCountHandlerType =
+  RequestHandler<BookParamsType, CartResponseType, ChangeCountCartBodyType, QueryType>;

@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post('/add', tokenMiddleware, createValidationMiddleware(schemes.addBookSchema), bookController.addBook);
 router.get('/getAll', createValidationMiddleware(schemes.getAllBooksSchema), bookController.getAllBooks);
-router.get('/getByArray', bookController.getBooksByArray);
-router.get('/:bookId', bookController.getBookById);
+router.get('/getByArray', tokenMiddleware, createValidationMiddleware(schemes.getBooksByArraySchema), bookController.getBooksByArray);
+router.get('/:bookId', createValidationMiddleware(schemes.getBookByIdSchema), bookController.getBookById);
 
 export default router;

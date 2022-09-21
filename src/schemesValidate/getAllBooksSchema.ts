@@ -2,8 +2,6 @@ import * as yup from 'yup';
 import type { ValidationSchemaType } from './typesSchemes';
 
 const getAllBooksSchema: ValidationSchemaType = {
-  body: {
-  },
   query: {
     page: yup.string(),
     pageSize: yup.string(),
@@ -13,8 +11,6 @@ const getAllBooksSchema: ValidationSchemaType = {
     genres: yup.string(),
     minPrice: yup.string(),
     maxPrice: yup.string(),
-  },
-  params: {
   },
 };
 

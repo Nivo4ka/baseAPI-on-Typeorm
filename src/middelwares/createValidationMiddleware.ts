@@ -34,13 +34,13 @@ const createValidationMiddleware = (schema: ValidationSchemaType): Handler => {
 
       if (err.inner) {
         err.inner.forEach((_elem: { path: string; message: string; name: string }) => {
-          const qwer: ITemplateInt = {
+          const medium: ITemplateInt = {
             path: _elem.path.split('.')[0],
             field: _elem.path.split('.')[1],
             message: _elem.message,
             name: _elem.name,
           };
-          errorInfo.push(qwer);
+          errorInfo.push(medium);
         });
       }
 
