@@ -15,7 +15,7 @@ const getAllBooks: GetAllBooksHandlerType = async (req, res, next) => {
 
     if (req.query.search) {
       const search = `%${req.query.search}%`;
-      query.where('(books.title ILIKE :search OR Book.autor ILIKE :search)', { search });
+      query.where('(books.title ILIKE :search OR books.autor ILIKE :search)', { search });
     }
     if (genres) {
       query.andWhere('books.genreId IN(:...currentGenges)', { currentGenges });

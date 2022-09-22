@@ -1,5 +1,6 @@
 import db from '../../db';
 import type { PatchUserInfoHandlerType } from '../../handlerTypes';
+import { existingUserError } from '../../utils/errorHelper';
 
 const patchUserInfo: PatchUserInfoHandlerType = async (req, res, next) => {
   try {
@@ -8,6 +9,16 @@ const patchUserInfo: PatchUserInfoHandlerType = async (req, res, next) => {
 
     if (fullName) {
       user.fullName = fullName;
+    }
+
+    const existEmail = await db.user.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (existEmail && existEmail.id !== user.id) {
+      return next(existingUserError);
     }
 
     user.email = email;

@@ -1,8 +1,10 @@
 import config from '../config';
 
-export const convertToFinalUrl = (fileName: string, folder: string) => {
-  if (fileName) {
-    return `http://localhost:${config.port}/static/${folder}/${fileName}`;
+export const convertToFinalUrl = (fileName: string | null, folder: string) => {
+  if (!fileName) {
+    return null``;
   }
-  return fileName;
+
+  const baseUrl = `${config.domenName}/static/${folder}/${fileName}`;
+  return baseUrl;
 };

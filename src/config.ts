@@ -11,6 +11,7 @@ const joinedEnv = {
 
 const config = {
   port: +joinedEnv.PORT,
+  domenName: joinedEnv.DOMEN,
   db: {
     dbName: joinedEnv.DB_NAME,
     username: joinedEnv.DB_USERNAME,

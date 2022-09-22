@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import db from '../../db';
 import type { PatchUserImgHandlerType } from '../../handlerTypes';
+import { convertToFinalUrl } from '../../utils/urlHelper';
 
 const patchUserImg: PatchUserImgHandlerType = async (req, res, next) => {
   try {
@@ -13,6 +14,10 @@ const patchUserImg: PatchUserImgHandlerType = async (req, res, next) => {
 
     const fileName = `${user.email.split('@')[0]}-${Date.now()}.${fileType}`;
 
+    await fs.promises.unlink(
+      `${path.resolve(__dirname, '../../source/images/users', user.avatar.split('static/users/')[1])}`,
+    );
+
     await fs.promises.writeFile(
       `${path.resolve(__dirname, '../../source/images/users', fileName)}`,
       fileData,
@@ -22,6 +27,7 @@ const patchUserImg: PatchUserImgHandlerType = async (req, res, next) => {
     user.avatar = fileName;
 
     await db.user.save(user);
+    user.avatar = convertToFinalUrl(user.avatar, 'users');
     return res.send({ user });
   } catch (err) {
     return next(err);

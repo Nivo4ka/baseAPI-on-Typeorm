@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, AfterUpdate, AfterLoad, OneToMany, JoinTable } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, AfterLoad, OneToMany, JoinTable } from 'typeorm';
 import { convertToFinalUrl } from '../../utils/urlHelper';
 import Cart from './Cart';
 import Favorite from './Favorite';
@@ -46,7 +46,6 @@ class User {
   ratings: Rating[];
 
   @AfterLoad()
-  @AfterUpdate()
   public getAvatar() {
     this.avatar = convertToFinalUrl(this.avatar, 'users');
   }
